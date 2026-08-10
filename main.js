@@ -210,7 +210,7 @@ const brandData = [
     {
         name: "JęUN FOODS",
 
-        logo: "assets/logos/brand-01.png",
+        logo: "assets/logos/jeunlogo.jpeg",
 
         type: "Event Catering Brand",
 
@@ -245,7 +245,7 @@ const brandData = [
     {
         name: "PEARLS LEARNING ZONE",
 
-        logo: "assets/logos/brand-01.png",
+        logo: "assets/logos/plzlogo.jpeg",
 
         type: "Early Childhood Brand",
 
@@ -281,7 +281,7 @@ const brandData = [
     {
         name: "OBINRIN.NG",
 
-        logo: "assets/logos/brand-01.png",
+        logo: "assets/logos/obinrinlogo.jpeg",
 
         type: "E-commerce Brand",
 
@@ -316,7 +316,7 @@ const brandData = [
     {
         name: "BRANDON",
 
-        logo: "assets/logos/brand-04.png",
+        logo: "assets/logos/brandonlogo.jpeg",
 
         type: "Marketing Agency",
 
@@ -340,7 +340,7 @@ const brandData = [
     {
         name: "2702 Cakes",
 
-        logo: "assets/logos/brand-01.png",
+        logo: "assets/logos/2702logo.jpeg",
 
         type: "Cake and Celebration Brand",
 
