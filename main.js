@@ -363,7 +363,7 @@ const brandData = [
     {
         name: "SNSbyKanyin",
 
-        logo: "assets/logos/brand-01.png",
+        logo: "assets/logos/snslogo.jpeg",
 
         type: "Wig Revamping and Hairstyling Brand",
 
