@@ -348,7 +348,7 @@ const brandData = [
 
         role: "Social Media Manager",
 
-        duration: "",
+        duration: "October 2024 - October 2025",
 
         bulletPoints: [
             "Supported the brand's Instagram rebranding, strenthening its visual identity, profile structure, and overall content presentation.",
@@ -371,7 +371,7 @@ const brandData = [
 
         role: "Social Media Manager",
 
-        duration: "",
+        duration: "February 2025 - September 2025",
 
         bulletPoints: [
             "Developed the brand’s social media strategy around service visibility, customer transformations, audience engagement, and appointment bookings.",
