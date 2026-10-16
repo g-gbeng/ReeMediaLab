@@ -1,4 +1,10 @@
 /* ==================================================
+   REEMEDIALAB
+   MAIN JAVASCRIPT
+================================================== */
+
+
+/* ==================================================
    ELEMENTS
 ================================================== */
 
@@ -14,203 +20,146 @@ const viewBrandButtons = document.querySelectorAll(".view-brand");
 
 /* ==================================================
    STICKY NAVIGATION
+   One passive listener, at most once per frame.
 ================================================== */
+
+let headerScrolled = null;
+let scrollTicking = false;
+
+function updateHeader() {
+
+    scrollTicking = false;
+
+    const isScrolled = window.scrollY > 80;
+
+    if (isScrolled !== headerScrolled) {
+        header.classList.toggle("scrolled", isScrolled);
+        headerScrolled = isScrolled;
+    }
+
+}
 
 window.addEventListener("scroll", () => {
 
-    if (window.scrollY > 80) {
-
-        header.classList.add("scrolled");
-
-    } else {
-
-        header.classList.remove("scrolled");
-
+    if (!scrollTicking) {
+        scrollTicking = true;
+        requestAnimationFrame(updateHeader);
     }
 
-});
+}, { passive: true });
+
+updateHeader();
 
 
 /* ==================================================
    MOBILE MENU
 ================================================== */
 
+function setMenu(open) {
+
+    navLinks.classList.toggle("active", open);
+
+    menuToggle.setAttribute("aria-expanded", String(open));
+    menuToggle.setAttribute("aria-label", open ? "Close navigation" : "Open navigation");
+    menuToggle.innerHTML = open ? "&times;" : "☰";
+
+}
+
 if (menuToggle && navLinks) {
 
     menuToggle.addEventListener("click", () => {
+        setMenu(!navLinks.classList.contains("active"));
+    });
 
-        navLinks.classList.toggle("active");
+    /* close when a link is chosen */
+    navItems.forEach(link => {
+        link.addEventListener("click", () => setMenu(false));
+    });
 
-        const isOpen = navLinks.classList.contains("active");
-
-        menuToggle.setAttribute(
-            "aria-label",
-            isOpen ? "Close navigation" : "Open navigation"
-        );
-
-        menuToggle.innerHTML = isOpen ? "&times;" : "☰";
-
+    /* close when tapping anywhere outside the header */
+    document.addEventListener("click", event => {
+        if (navLinks.classList.contains("active") && !header.contains(event.target)) {
+            setMenu(false);
+        }
     });
 
 }
 
 
 /* ==================================================
-   CLOSE MOBILE MENU WHEN LINK IS CLICKED
-================================================== */
-
-navItems.forEach((link) => {
-
-    link.addEventListener("click", () => {
-
-        navLinks.classList.remove("active");
-
-        if (menuToggle) {
-
-            menuToggle.innerHTML = "☰";
-
-            menuToggle.setAttribute(
-                "aria-label",
-                "Open navigation"
-            );
-
-        }
-
-    });
-
-});
-
-
-/* ==================================================
    ACTIVE NAVIGATION LINK
+   Watches which section crosses the area just
+   below the header, instead of measuring every
+   section on every scroll.
 ================================================== */
 
 const sections = document.querySelectorAll("main section[id]");
 
-const updateActiveNavigation = () => {
+const linkFor = new Map(
+    Array.from(navItems, link => [link.getAttribute("href"), link])
+);
 
-    let currentSection = "";
+const sectionObserver = new IntersectionObserver(entries => {
 
-    sections.forEach((section) => {
+    entries.forEach(entry => {
 
-        const sectionTop = section.offsetTop - 180;
-        const sectionHeight = section.offsetHeight;
+        if (!entry.isIntersecting) return;
 
-        if (
-            window.scrollY >= sectionTop &&
-            window.scrollY < sectionTop + sectionHeight
-        ) {
+        navItems.forEach(link => link.classList.remove("active"));
 
-            currentSection = section.getAttribute("id");
-
-        }
+        linkFor.get(`#${entry.target.id}`)?.classList.add("active");
 
     });
 
-
-    navItems.forEach((link) => {
-
-        link.classList.remove("active");
-
-        const href = link.getAttribute("href");
-
-        if (href === `#${currentSection}`) {
-
-            link.classList.add("active");
-
-        }
-
-    });
-
-};
-
-window.addEventListener("scroll", updateActiveNavigation);
-
-updateActiveNavigation();
-
-
-/* ==================================================
-   INITIAL PAGE FADE-IN
-================================================== */
-
-window.addEventListener("load", () => {
-
-    document.body.classList.add("page-loaded");
-
+}, {
+    /* a band from 180px below the top of the screen downwards */
+    rootMargin: "-180px 0px -55% 0px"
 });
+
+sections.forEach(section => sectionObserver.observe(section));
 
 
 /* ==================================================
    SCROLL REVEAL
+   The .reveal class is in the HTML; elements are
+   only hidden while the "js" class is on <html>.
 ================================================== */
 
-const revealElements = document.querySelectorAll(
-    ".section-heading, " +
-    ".about-text, " +
-    ".capability-card, " +
-    ".brand-card, " +
-    ".course-item, " +
-    ".degree, " +
-    ".contact-content, " +
-    ".closing-content"
-);
+const revealObserver = new IntersectionObserver((entries, observer) => {
 
+    entries.forEach(entry => {
 
-const revealObserver = new IntersectionObserver(
-    (entries, observer) => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add("reveal-active");
+            observer.unobserve(entry.target);
+        }
 
-        entries.forEach((entry) => {
+    });
 
-            if (entry.isIntersecting) {
+}, { threshold: 0.12 });
 
-                entry.target.classList.add("reveal-active");
-
-                observer.unobserve(entry.target);
-
-            }
-
-        });
-
-    },
-    {
-        threshold: 0.12
-    }
-);
-
-
-revealElements.forEach((element) => {
-
-    element.classList.add("reveal");
-
+document.querySelectorAll(".reveal").forEach(element => {
     revealObserver.observe(element);
-
 });
 
 
 /* ==================================================
    BRAND DATA
+   Each "View More" button has a data-brand value
+   that matches a key below. A brand's pop-up shows
+   whichever sections it has: objective,
+   roleDescription, strategy, contribution,
+   bulletPoints and results.
 ================================================== */
-
-/*
-    We will replace these placeholders with the
-    actual 6 brands and their information.
-
-    Brands 1-4:
-    Objective
-    My Role
-    Strategic Approach
-
-    Brands 5-6:
-    Bullet-point contributions
-
-*/
 
 const brandData = [
 
     {
+        key: "jeun",
+
         name: "JęUN FOODS",
 
-        logo: "assets/logos/jeunlogo.jpeg",
+        logo: "assets/logos/jeunlogo.webp",
 
         type: "Event Catering Brand",
 
@@ -218,7 +167,7 @@ const brandData = [
 
         role: "Social Media Manager",
 
-        duration: "January 2026 - Present",
+        duration: "January 2026 - August 2026",
 
         objective:
             "Strengthen Jęun Foods digital presence, improve service visibility, generate qualified enquiries, and support bookings for grazing tables and branded events.",
@@ -243,9 +192,11 @@ const brandData = [
 
 
     {
+        key: "pearls",
+
         name: "PEARLS LEARNING ZONE",
 
-        logo: "assets/logos/plzlogo.jpeg",
+        logo: "assets/logos/plzlogo.webp",
 
         type: "Early Childhood Brand",
 
@@ -279,9 +230,11 @@ const brandData = [
 
 
     {
+        key: "obinrin",
+
         name: "OBINRIN.NG",
 
-        logo: "assets/logos/obinrinlogo.jpeg",
+        logo: "assets/logos/obinrinlogo.webp",
 
         type: "E-commerce Brand",
 
@@ -314,9 +267,11 @@ const brandData = [
     },
 
     {
+        key: "brandon",
+
         name: "BRANDON",
 
-        logo: "assets/logos/brandonlogo.jpeg",
+        logo: "assets/logos/brandonlogo.webp",
 
         type: "Marketing Agency",
 
@@ -324,7 +279,7 @@ const brandData = [
 
         role: "Social Media Manager",
 
-        duration: "December 2025 - April 2026",
+        duration: "December 2025 - October 2026",
 
         objective:
             "Develop and execute platform-specific strategies for multiple client accounts while strengthening brand consistency and content performance.",
@@ -338,9 +293,11 @@ const brandData = [
 
 
     {
+        key: "2702",
+
         name: "2702 Cakes",
 
-        logo: "assets/logos/2702logo.jpeg",
+        logo: "assets/logos/2702logo.webp",
 
         type: "Cake and Celebration Brand",
 
@@ -351,8 +308,8 @@ const brandData = [
         duration: "October 2024 - October 2025",
 
         bulletPoints: [
-            "Supported the brand's Instagram rebranding, strenthening its visual identity, profile structure, and overall content presentation.",
-            "Built and optimised the brand's Tiktok presence from account setup, including keyword research, profile optimization, content planning, and short-form video development.",
+            "Supported the brand's Instagram rebranding, strengthening its visual identity, profile structure, and overall content presentation.",
+            "Built and optimised the brand's TikTok presence from account setup, including keyword research, profile optimization, content planning, and short-form video development.",
             "Grew the TikTok account from launch to more than 500 followers, with multiple organic videos generating over 30,000 views.",
             "Planned and executed paid campaigns across TikTok and Instagram for seasonal occasions, including Valentine’s Day and Girlfriends’ Day, generating direct online orders."
 
@@ -361,9 +318,11 @@ const brandData = [
 
 
     {
+        key: "sns",
+
         name: "SNSbyKanyin",
 
-        logo: "assets/logos/snslogo.jpeg",
+        logo: "assets/logos/snslogo.webp",
 
         type: "Wig Revamping and Hairstyling Brand",
 
@@ -384,301 +343,168 @@ const brandData = [
 
 ];
 
+const brandsByKey = new Map(brandData.map(brand => [brand.key, brand]));
+
 
 /* ==================================================
    MODAL ELEMENTS
 ================================================== */
 
-const modalBrandName =
-    document.querySelector("#modalBrandName");
+const modalBrandName = document.querySelector("#modalBrandName");
+const modalType = document.querySelector("#modalType");
+const modalLocation = document.querySelector("#modalLocation");
+const modalRole = document.querySelector("#modalRole");
+const modalDuration = document.querySelector("#modalDuration");
+const modalBrandLogo = document.querySelector("#modalBrandLogo");
 
-const modalType =
-    document.querySelector("#modalType");
+const objectiveBlock = document.querySelector("#objectiveBlock");
+const modalObjective = document.querySelector("#modalObjective");
 
-const modalLocation =
-    document.querySelector("#modalLocation");
+const roleBlock = document.querySelector("#roleBlock");
+const modalRoleDescription = document.querySelector("#modalRoleDescription");
 
-const modalRole =
-    document.querySelector("#modalRole");
+const strategyBlock = document.querySelector("#strategyBlock");
+const strategyHeading = strategyBlock.querySelector("h3");
+const strategyList = document.querySelector("#modalStrategy");
 
-const modalDuration =
-    document.querySelector("#modalDuration");
-
-const modalObjective =
-    document.querySelector("#modalObjective");
-
-const modalRoleDescription =
-    document.querySelector("#modalRoleDescription");
-
-const modalStrategy =
-    document.querySelector("#modalStrategy");
-
-const modalBrandLogo =
-    document.querySelector("#modalBrandLogo");
-
-const resultsBlock =
-    document.querySelector("#resultsBlock");
-
-const resultsList =
-    document.querySelector("#modalResults");
+const resultsBlock = document.querySelector("#resultsBlock");
+const resultsList = document.querySelector("#modalResults");
 
 
 /* ==================================================
-   OPEN BRAND MODAL
+   FILL THE MODAL
 ================================================== */
 
-viewBrandButtons.forEach((button, index) => {
-
-    button.addEventListener("click", () => {
-
-        const brand = brandData[index];
-
-        if (!brand) return;
-
-
-        /* Brand name */
-
-        modalBrandName.textContent = brand.name;
-
-
-        /* Logo */
-
-        modalBrandLogo.src = brand.logo;
-        modalBrandLogo.alt = `${brand.name} logo`;
-
-
-        /* Brand information */
-
-        modalType.textContent = brand.type;
-
-        modalLocation.textContent = brand.location;
-
-        modalRole.textContent = brand.role;
-
-        modalDuration.textContent = brand.duration;
-
-
-        /* Case study */
-
-        /* ==================================================
-   CASE STUDY CONTENT
-================================================== */
-
-        const objectiveBlock =
-            document.querySelector("#objectiveBlock");
-
-        const roleBlock =
-            document.querySelector("#roleBlock");
-
-        const strategyBlock =
-            document.querySelector("#strategyBlock");
-
-        const strategyList =
-            document.querySelector("#modalStrategy");
-
-
-        /* ==================================================
-           BRAND POPUP CONTENT
-        ================================================== */
-
-
-        /*
-            BRANDS 1-3
-            Full case study
-        */
-
-        if (index < 3) {
-
-            objectiveBlock.style.display = "block";
-            roleBlock.style.display = "block";
-            strategyBlock.style.display = "block";
-            resultsBlock.style.display = "block";
-
-            modalObjective.textContent =
-                brand.objective;
-
-            modalRoleDescription.textContent =
-                brand.roleDescription;
-
-
-            /* Strategic Approach */
-
-            strategyBlock.querySelector("h3").textContent =
-                "Strategic Approach";
-
-            strategyList.innerHTML = "";
-
-            brand.strategy.forEach((item) => {
-
-                const li = document.createElement("li");
-
-                li.textContent = item;
-
-                strategyList.appendChild(li);
-
-            });
-
-
-            /* Results & Impact */
-
-            resultsList.innerHTML = "";
-
-            brand.results.forEach((item) => {
-
-                const li = document.createElement("li");
-
-                li.textContent = item;
-
-                resultsList.appendChild(li);
-
-            });
-
-        }
-
-
-        /*
-            BRAND 4
-            Objective + My Contribution
-        */
-
-        else if (index === 3) {
-
-            objectiveBlock.style.display = "block";
-
-            roleBlock.style.display = "none";
-
-            strategyBlock.style.display = "block";
-
-            resultsBlock.style.display = "none";
-
-
-            /* Objective */
-
-            modalObjective.textContent =
-                brand.objective;
-
-
-            /* My Contribution */
-
-            strategyBlock.querySelector("h3").textContent =
-                "My Contribution";
-
-            strategyList.innerHTML = "";
-
-            brand.contribution.forEach((item) => {
-
-                const li = document.createElement("li");
-
-                li.textContent = item;
-
-                strategyList.appendChild(li);
-
-            });
-
-        }
-
-
-        /*
-            BRANDS 5-6
-            Key Contributions
-        */
-
-        else {
-
-            objectiveBlock.style.display = "none";
-
-            roleBlock.style.display = "none";
-
-            strategyBlock.style.display = "block";
-
-            resultsBlock.style.display = "none";
-
-
-            strategyBlock.querySelector("h3").textContent =
-                "Key Contributions";
-
-            strategyList.innerHTML = "";
-
-            brand.bulletPoints.forEach((item) => {
-
-                const li = document.createElement("li");
-
-                li.textContent = item;
-
-                strategyList.appendChild(li);
-
-            });
-
-        }
-
-
-        /*
-            BRANDS 5-6
-            Bullet-point format
-        */
-
-        /* Open modal */
-
-        brandModal.classList.add("active");
-
-        document.body.style.overflow = "hidden";
-
-    });
-
-});
-
-
-/* ==================================================
-   CLOSE BRAND MODAL
-================================================== */
-
-const closeBrandModal = () => {
-
-    brandModal.classList.remove("active");
-
-    document.body.style.overflow = "";
-
-};
-
-
-if (modalClose) {
-
-    modalClose.addEventListener(
-        "click",
-        closeBrandModal
+function fillList(list, items) {
+
+    list.replaceChildren(
+        ...items.map(item => {
+            const li = document.createElement("li");
+            li.textContent = item;
+            return li;
+        })
     );
+
+}
+
+function showBrand(brand) {
+
+    modalBrandName.textContent = brand.name;
+
+    modalBrandLogo.src = brand.logo;
+    modalBrandLogo.alt = `${brand.name} logo`;
+
+    modalType.textContent = brand.type || "—";
+    modalLocation.textContent = brand.location || "—";
+    modalRole.textContent = brand.role || "—";
+    modalDuration.textContent = brand.duration || "—";
+
+    /* Objective */
+    objectiveBlock.hidden = !brand.objective;
+    modalObjective.textContent = brand.objective || "";
+
+    /* My Role */
+    roleBlock.hidden = !brand.roleDescription;
+    modalRoleDescription.textContent = brand.roleDescription || "";
+
+    /* Strategic Approach / My Contribution / Key Contributions */
+    const list =
+        (brand.strategy && { title: "Strategic Approach", items: brand.strategy }) ||
+        (brand.contribution && { title: "My Contribution", items: brand.contribution }) ||
+        (brand.bulletPoints && { title: "Key Contributions", items: brand.bulletPoints });
+
+    strategyBlock.hidden = !list;
+
+    if (list) {
+        strategyHeading.textContent = list.title;
+        fillList(strategyList, list.items);
+    }
+
+    /* Results & Impact */
+    resultsBlock.hidden = !brand.results;
+    fillList(resultsList, brand.results || []);
 
 }
 
 
 /* ==================================================
-   CLOSE MODAL WHEN CLICKING BACKDROP
+   OPEN / CLOSE
 ================================================== */
 
-brandModal.addEventListener("click", (event) => {
+let lastFocused = null;
 
-    if (event.target === brandModal) {
+function openBrandModal(key) {
 
-        closeBrandModal();
+    const brand = brandsByKey.get(key);
 
-    }
+    if (!brand) return;
 
+    lastFocused = document.activeElement;
+
+    showBrand(brand);
+
+    brandModal.querySelector(".modal-content").scrollTop = 0;
+
+    brandModal.classList.add("active");
+    document.body.style.overflow = "hidden";
+
+    /* the modal is still visibility:hidden until the next frame */
+    requestAnimationFrame(() => modalClose.focus());
+
+}
+
+function closeBrandModal() {
+
+    if (!brandModal.classList.contains("active")) return;
+
+    brandModal.classList.remove("active");
+    document.body.style.overflow = "";
+
+    if (lastFocused) lastFocused.focus();
+
+}
+
+viewBrandButtons.forEach(button => {
+
+    button.addEventListener("click", () => {
+        openBrandModal(button.dataset.brand);
+    });
+
+});
+
+modalClose.addEventListener("click", closeBrandModal);
+
+/* click on the dark backdrop closes it */
+brandModal.addEventListener("click", event => {
+    if (event.target === brandModal) closeBrandModal();
 });
 
 
 /* ==================================================
-   CLOSE MODAL WITH ESCAPE KEY
+   KEYBOARD
+   Esc closes the modal or the mobile menu.
+   Tab stays inside the modal while it's open.
 ================================================== */
 
-document.addEventListener("keydown", (event) => {
+document.addEventListener("keydown", event => {
 
-    if (
-        event.key === "Escape" &&
-        brandModal.classList.contains("active")
-    ) {
+    const modalOpen = brandModal.classList.contains("active");
 
-        closeBrandModal();
+    if (event.key === "Escape") {
 
+        if (modalOpen) {
+            closeBrandModal();
+        } else if (navLinks.classList.contains("active")) {
+            setMenu(false);
+            menuToggle.focus();
+        }
+
+    }
+
+    /* the close button is the only focusable element in the modal */
+    if (event.key === "Tab" && modalOpen) {
+        event.preventDefault();
+        modalClose.focus();
     }
 
 });

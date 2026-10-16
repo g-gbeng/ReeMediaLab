@@ -44,6 +44,11 @@ img {
     display: block;
 }
 
+:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+}
+
 
 /* ==================================================
    CONTAINER / SECTIONS
@@ -157,17 +162,20 @@ h4 {
     left: 0;
     bottom: -6px;
 
-    width: 0;
+    width: 100%;
     height: 1px;
 
     background: var(--white);
 
-    transition: width 0.3s ease;
+    transform: scaleX(0);
+    transform-origin: left;
+
+    transition: transform 0.3s ease;
 }
 
 .nav-links a:hover::after,
 .nav-links a.active::after {
-    width: 100%;
+    transform: scaleX(1);
 }
 
 .menu-toggle {
@@ -508,14 +516,20 @@ h4 {
     opacity: 0;
     visibility: hidden;
 
+    /* closing: fade out, then hide */
     transition:
         opacity 0.3s ease,
-        visibility 0.3s ease;
+        visibility 0s linear 0.3s;
 }
 
 .brand-modal.active {
     opacity: 1;
     visibility: visible;
+
+    /* opening: visible straight away so focus can move inside */
+    transition:
+        opacity 0.3s ease,
+        visibility 0s;
 }
 
 .modal-content {
@@ -691,17 +705,6 @@ h4 {
 
 .course-item p {
     color: rgba(15, 16, 21, 0.65);
-}
-
-.course-item span {
-    position: absolute;
-    top: 25px;
-    right: 0;
-
-    color: var(--dark-brown);
-
-    font-size: 0.8rem;
-    font-weight: 700;
 }
 
 .degree {
@@ -1017,16 +1020,9 @@ h4 {
    PAGE ANIMATIONS
 ================================================== */
 
-body {
-    opacity: 0;
-    transition: opacity 0.8s ease;
-}
-
-body.page-loaded {
-    opacity: 1;
-}
-
-.reveal {
+/* elements start hidden only when JavaScript is running,
+   so the page still shows if the script fails to load */
+.js .reveal {
     opacity: 0;
     transform: translateY(35px);
 
@@ -1035,9 +1031,21 @@ body.page-loaded {
         transform 0.7s ease;
 }
 
-.reveal-active {
+.js .reveal.reveal-active {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
+}
+
+/* brand cards keep their own hover lift once revealed */
+.js .brand-card.reveal.reveal-active {
+    transition:
+        opacity 0.7s ease,
+        transform 0.35s ease,
+        box-shadow 0.35s ease;
+}
+
+.js .brand-card.reveal.reveal-active:hover {
+    transform: translateY(-7px);
 }
 
 /* ==================================================
@@ -1125,6 +1133,30 @@ body.page-loaded {
 
     .skills-column {
         padding: 30px;
+    }
+
+}
+
+/* ==================================================
+   REDUCED MOTION
+================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+    }
+
+    .js .reveal {
+        opacity: 1;
+        transform: none;
     }
 
 }

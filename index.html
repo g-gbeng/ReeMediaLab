@@ -5,9 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Social Media Manager | Portfolio</title>
+    <title>REEMEDIALAB | Brand &amp; Marketing Strategist</title>
+
+    <meta
+        name="description"
+        content="Brand and marketing strategist with 4+ years of experience in social media management, content strategy and digital marketing across Canada and Nigeria."
+    >
+
+    <!-- lets the CSS hide scroll-reveal elements only when JavaScript is running -->
+    <script>document.documentElement.classList.add("js");</script>
 
     <link rel="stylesheet" href="style.css">
+
+    <script src="main.js" defer></script>
 </head>
 
 <body>
@@ -24,11 +34,17 @@
                 REEMEDIALAB
             </a>
 
-            <button class="menu-toggle" aria-label="Open navigation">
+            <button
+                class="menu-toggle"
+                type="button"
+                aria-label="Open navigation"
+                aria-controls="navLinks"
+                aria-expanded="false"
+            >
                 ☰
             </button>
 
-            <ul class="nav-links">
+            <ul class="nav-links" id="navLinks">
 
                 <li>
                     <a href="#home">Home</a>
@@ -113,7 +129,7 @@
 
         <section id="about" class="about section">
 
-            <div class="section-heading">
+            <div class="section-heading reveal">
 
                 <p class="eyebrow">
                     ABOUT ME
@@ -128,7 +144,7 @@
 
             <div class="about-content">
 
-                <div class="about-text">
+                <div class="about-text reveal">
 
                     <p>
                         I am a Brand and Marketing Strategist with 4+ years of experience across
@@ -136,7 +152,7 @@
                     </p>
 
                     <p>
-                        My experience spans businesses in Canada and Nigeria across event catering, education
+                        My experience spans businesses in Canada and Nigeria across event catering, education,
                         e-commerce, energy, fashion, beauty, and professional services.
                     </p>
 
@@ -153,7 +169,7 @@
 
         <section id="capabilities" class="capabilities section">
 
-            <div class="section-heading">
+            <div class="section-heading reveal">
 
                 <p class="eyebrow">
                     CORE CAPABILITIES
@@ -175,7 +191,7 @@
 
                 <!-- Capability 1 -->
 
-                <article class="capability-card">
+                <article class="capability-card reveal">
 
                     <span class="capability-number">
                         01
@@ -197,7 +213,7 @@
 
                 <!-- Capability 2 -->
 
-                <article class="capability-card">
+                <article class="capability-card reveal">
 
                     <span class="capability-number">
                         02
@@ -218,7 +234,7 @@
 
                 <!-- Capability 3 -->
 
-                <article class="capability-card">
+                <article class="capability-card reveal">
 
                     <span class="capability-number">
                         03
@@ -230,7 +246,7 @@
 
                     <p>
                         Marketing analytics, KPI tracking, performance reporting
-                        competitor analysis SWOT analysis, trends and keyword research, Data Analytics.
+                        competitor analysis, SWOT analysis, trends and keyword research, Data Analytics.
                     </p>
 
                 </article>
@@ -238,7 +254,7 @@
 
                 <!-- Capability 4 -->
 
-                <article class="capability-card">
+                <article class="capability-card reveal">
 
                     <span class="capability-number">
                         04
@@ -363,7 +379,7 @@
 
         <section id="work" class="work section">
 
-            <div class="section-heading">
+            <div class="section-heading reveal">
 
                 <p class="eyebrow">
                     SELECTED WORK
@@ -385,17 +401,17 @@
 
                 <!-- Brand 1 -->
 
-                <article class="brand-card">
+                <article class="brand-card reveal">
 
                     <div class="brand-logo">
-                        <img src="assets/logos/jeunlogo.jpeg" alt="Brand 01 logo">
+                        <img src="assets/logos/jeunlogo.webp" alt="JęUN FOODS logo" width="360" height="270" loading="lazy" decoding="async">
                     </div>
 
                     <h3>
                         JęUN FOODS
                     </h3>
 
-                    <button class="view-brand">
+                    <button class="view-brand" type="button" data-brand="jeun" aria-haspopup="dialog">
                         View More
                     </button>
 
@@ -404,17 +420,17 @@
 
                 <!-- Brand 2 -->
 
-                <article class="brand-card">
+                <article class="brand-card reveal">
 
                     <div class="brand-logo">
-                        <img src="assets/logos/plzlogo.jpeg" alt="Brand 02 logo">
+                        <img src="assets/logos/plzlogo.webp" alt="PEARLS LEARNING ZONE logo" width="288" height="360" loading="lazy" decoding="async">
                     </div>
 
                     <h3>
                         PEARLS LEARNING ZONE
                     </h3>
 
-                    <button class="view-brand">
+                    <button class="view-brand" type="button" data-brand="pearls" aria-haspopup="dialog">
                         View More
                     </button>
 
@@ -423,17 +439,17 @@
 
                 <!-- Brand 3 -->
 
-                <article class="brand-card">
+                <article class="brand-card reveal">
 
                     <div class="brand-logo">
-                        <img src="assets/logos/obinrinlogo.jpeg" alt="Brand 03 logo">
+                        <img src="assets/logos/obinrinlogo.webp" alt="OBINRIN.NG logo" width="288" height="360" loading="lazy" decoding="async">
                     </div>
 
                     <h3>
                         OBINRIN.NG
                     </h3>
 
-                    <button class="view-brand">
+                    <button class="view-brand" type="button" data-brand="obinrin" aria-haspopup="dialog">
                         View More
                     </button>
 
@@ -441,17 +457,17 @@
                 
                 <!-- Brand 4 -->
 
-                <article class="brand-card">
+                <article class="brand-card reveal">
 
                     <div class="brand-logo">
-                        <img src="assets/logos/brandonlogo.jpeg" alt="Brand 04 logo">
+                        <img src="assets/logos/brandonlogo.webp" alt="BRANDON logo" width="288" height="360" loading="lazy" decoding="async">
                     </div>
 
                     <h3>
                         BRANDON
                     </h3>
 
-                    <button class="view-brand">
+                    <button class="view-brand" type="button" data-brand="brandon" aria-haspopup="dialog">
                         View More
                     </button>
 
@@ -464,17 +480,17 @@
                 
                 <!-- Brand 5 -->
 
-                <article class="brand-card">
+                <article class="brand-card reveal">
 
                     <div class="brand-logo">
-                        <img src="assets/logos/2702logo.jpeg" alt="Brand 05 logo">
+                        <img src="assets/logos/2702logo.webp" alt="2702 CAKES logo" width="288" height="360" loading="lazy" decoding="async">
                     </div>
 
                     <h3>
                         2702 CAKES
                     </h3>
 
-                    <button class="view-brand">
+                    <button class="view-brand" type="button" data-brand="2702" aria-haspopup="dialog">
                         View More
                     </button>
 
@@ -485,17 +501,17 @@
 
                 <!-- Brand 6 -->
 
-                <article class="brand-card">
+                <article class="brand-card reveal">
 
                     <div class="brand-logo">
-                        <img src="assets/logos/snslogo.jpeg" alt="Brand 06 logo">
+                        <img src="assets/logos/snslogo.webp" alt="SNSbyKanyin logo" width="288" height="360" loading="lazy" decoding="async">
                     </div>
 
                     <h3>
                         SNSbyKanyin
                     </h3>
 
-                    <button class="view-brand">
+                    <button class="view-brand" type="button" data-brand="sns" aria-haspopup="dialog">
                         View More
                     </button>
 
@@ -504,10 +520,10 @@
 
                 <!-- Brand 7 -->
 
-                <article class="brand-card">
+                <article class="brand-card reveal">
 
                     <div class="brand-logo">
-                        <img src="assets/logos/brandonlogo.jpeg" alt="Brand 07 logo">
+                        <img src="assets/logos/brandonlogo.webp" alt="Fortics Life Group logo" width="288" height="360" loading="lazy" decoding="async">
                     </div>
 
                     <h3>
@@ -518,10 +534,10 @@
 
                 <!-- Brand 9 -->
 
-                <article class="brand-card">
+                <article class="brand-card reveal">
 
                     <div class="brand-logo">
-                        <img src="assets/logos/casagraylogo.jpeg" alt="Brand 09 logo">
+                        <img src="assets/logos/casagraylogo.webp" alt="Casagray Candles logo" width="288" height="360" loading="lazy" decoding="async">
                     </div>
 
                     <h3>
@@ -533,10 +549,10 @@
 
                 <!-- Brand 10 -->
 
-                <article class="brand-card">
+                <article class="brand-card reveal">
 
                     <div class="brand-logo">
-                        <img src="assets/logos/devoirelogo.jpeg" alt="Brand 10 logo">
+                        <img src="assets/logos/devoirelogo.webp" alt="Devoire logo" width="288" height="360" loading="lazy" decoding="async">
                     </div>
 
                     <h3>
@@ -548,10 +564,10 @@
 
                    <!-- Brand 8 -->
 
-                <article class="brand-card">
+                <article class="brand-card reveal">
 
                     <div class="brand-logo">
-                        <img src="assets/logos/brandonlogo.jpeg" alt="Brand 08 logo">
+                        <img src="assets/logos/brandonlogo.webp" alt="Electric City Energy logo" width="288" height="360" loading="lazy" decoding="async">
                     </div>
 
                     <h3>
@@ -571,16 +587,16 @@
              BRAND MODAL
         ========================== -->
 
-        <div class="brand-modal" id="brandModal">
+        <div class="brand-modal" id="brandModal" role="dialog" aria-modal="true" aria-labelledby="modalBrandName">
 
             <div class="modal-content">
 
-                <button class="modal-close" aria-label="Close">
+                <button class="modal-close" type="button" aria-label="Close">
                     &times;
                 </button>
 
                 <div class="modal-logo">
-                    <img id="modalBrandLogo" src="" alt="Brand logo">
+                    <img id="modalBrandLogo" alt="" width="288" height="360">
                 </div>
 
                 <h2 id="modalBrandName">
@@ -689,7 +705,7 @@
 
         <section id="education" class="education section">
 
-            <div class="section-heading">
+            <div class="section-heading reveal">
 
                 <p class="eyebrow">
                     PROFESSIONAL DEVELOPMENT
@@ -713,20 +729,20 @@
                         Social Media Courses
                     </h3>
 
-                    <div class="course-item">
+                    <div class="course-item reveal">
 
                         <h4>
                             Social Media Management
                         </h4>
 
                         <p>
-                            Meta, via Cousera
+                            Meta, via Coursera
                         </p>
 
                     </div>
 
 
-                    <div class="course-item">
+                    <div class="course-item reveal">
 
                         <h4>
                             Social Media and Content Strategy
@@ -738,7 +754,7 @@
 
                     </div>
 
-                    <div class="course-item">
+                    <div class="course-item reveal">
 
                         <h4>
                             Introduction to Social Media Marketing
@@ -752,7 +768,7 @@
 
 
 
-                    <div class="course-item">
+                    <div class="course-item reveal">
 
                         <h4>
                             Introduction to Data Analytics
@@ -775,10 +791,10 @@
                         Education
                     </h3>
 
-                    <div class="degree">
+                    <div class="degree reveal">
 
                         <span class="degree-label">
-                            Bachelor of Engineering.
+                            Bachelor of Engineering
                         </span>
 
                         <h4>
@@ -811,7 +827,7 @@
 
         <section id="contact" class="contact section">
 
-            <div class="contact-content">
+            <div class="contact-content reveal">
 
                 <p class="eyebrow">
                     GET IN TOUCH
@@ -824,7 +840,7 @@
 
                 <p>
                     I collaborate with brands and marketing teams seeking clear positioning, intentional campaigns and
-                    data-informed strategies that produce measureable results.
+                    data-informed strategies that produce measurable results.
                     <br>
                     Let's build marketing that connects business objectives with audience needs.
                 </p>
@@ -836,7 +852,7 @@
                         Email Me
                     </a>
 
-                    <a href="https://www.linkedin.com/in/fareedah-afolabi-252793428/" target="_blank">
+                    <a href="https://www.linkedin.com/in/fareedah-afolabi-252793428/" target="_blank" rel="noopener">
                         LinkedIn
                     </a>
 
@@ -857,7 +873,7 @@
 
         <section class="closing">
 
-            <div class="closing-content">
+            <div class="closing-content reveal">
 
                 <p>
                     Let's Work Together.
@@ -890,8 +906,6 @@
 
     </footer>
 
-
-    <script src="main.js"></script>
 
 </body>
 
